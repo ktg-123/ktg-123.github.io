@@ -5,6 +5,7 @@
     var downpress=false;
     document.addEventListener("keydown",keyDownHandler,false);
     document.addEventListener("keyup",keyUpHandler,false);
+    var dir;
     var user={
         x:0,
         y:(canvas.height-80)/2,
@@ -27,7 +28,7 @@
         radius:10,
         color:"BLACK",
         speedx:2,
-        speedy:2,
+        speedy:0,
         speed:3
     };
     function keyDownHandler(a){
@@ -64,12 +65,18 @@
         ctx.fillStyle=color;
         ctx.fill();
     }
-    /*function reset(){
+    //reset the ball to default position
+    function reset(){
         ball.x=canvas.width/2;
         ball.y=canvas.height/2;
         ball.speed=3;
         ball.speedx=dir*2;
-    }*/
+        ball.speedy=0;
+        user.x=0;
+        comp.x=canvas.width-10;
+        user.y=(canvas.height-80)/2;
+        comp.y=(canvas.height-80)/2;
+    }
     function move(){
         ball.x+=ball.speedx;
         ball.y+=ball.speedy;
@@ -110,14 +117,34 @@
                 user.y=canvas.height-user.height;
             }
         }
-        comp.y=ball.y-comp.height/2;
+        
+        comp.y += ((ball.y - (comp.y + comp.height/2)))*(0.05);  //defines the movement of computer
         if(comp.y+comp.height>canvas.height){
         comp.y=canvas.height-comp.height;
         }
         else if(comp.y<0){
             comp.y=0;
         }
-        
+        if(ball.x-ball.radius<0){
+            comp.score++;
+             dir=1;
+            if(comp.score==5){
+            alert("Computer Wins. Click OK to start new game");
+            document.location.reload();
+            }
+            reset();
+            
+        }
+        if(ball.x+ball.radius>canvas.width){
+            user.score++;
+             dir=-1;
+            if(user.score==5){
+                alert("User Wins. Click OK to start new game");
+                document.location.reload();
+                clearInterval(interval);
+            }
+            reset();
+        }
     }
     function detectCollision(b,p){
         b.top=b.y-b.radius;
