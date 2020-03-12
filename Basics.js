@@ -3,9 +3,15 @@
     var radius=10;
     var uppress=false;
     var downpress=false;
+    var leftpress=false;
+    var rightpress=false;
     document.addEventListener("keydown",keyDownHandler,false);
     document.addEventListener("keyup",keyUpHandler,false);
     var dir;
+    let point=new Audio();
+    let hit=new Audio();
+    point.src="/home/kunal/Desktop/IMG Project/26f8b9_sonic_ring_sound_effect.mp3";
+    hit.src="/home/kunal/Desktop/IMG Project/Mario-jump-sound.mp3"
     var user={
         x:0,
         y:(canvas.height-80)/2,
@@ -38,6 +44,12 @@
         if(a.key=="ArrowDown"||a.key=="Down"){
             downpress=true;
         }
+        if(a.key=="ArrowRight"||a.key=="Right"){
+            rightpress=true;
+        }
+        if(a.key=="ArrowLeft"||a.key=="Left"){
+            leftpress=true;
+        }
     }
     function keyUpHandler(a){
         if(a.key=="ArrowUp"||a.key=="Up"){
@@ -45,6 +57,12 @@
         }
         if(a.key=="ArrowDown"||a.key=="Down"){
             downpress=false;
+        }
+        if(a.key=="ArrowRight"||a.key=="Right"){
+            rightpress=false;
+        }
+        if(a.key=="ArrowLeft"||a.key=="Left"){
+            leftpress=false;
         }
     }
     
@@ -82,6 +100,7 @@
         ball.y+=ball.speedy;
         if(ball.y+ball.speedy>canvas.height||ball.y+ball.speedy<0){
             ball.speedy=-ball.speedy;
+            //hit.play();
         }
         var player;
         if(ball.x<(canvas.width/2)){
@@ -103,6 +122,7 @@
             ball.speedx=ball.speed*Math.cos(angle)*direction;
             ball.speedy=ball.speed*Math.sin(angle);
             ball.speed+=.1;
+            //hit.play();
         }
         if(uppress){
             user.y-=5;
@@ -117,6 +137,19 @@
                 user.y=canvas.height-user.height;
             }
         }
+            if(rightpress){
+                user.x+=3;
+                if(user.x>canvas.width/10){
+                    user.x=canvas.width/10;
+                }
+            }
+            if(leftpress){
+                user.x-=3;
+                if(user.x<0){
+                    user.x=0;
+                }
+            }
+        
         
         comp.y += ((ball.y - (comp.y + comp.height/2)))*(0.05);  //defines the movement of computer
         if(comp.y+comp.height>canvas.height){
@@ -127,6 +160,7 @@
         }
         if(ball.x-ball.radius<0){
             comp.score++;
+            //point.play();
              dir=1;
             if(comp.score==5){
             alert("Computer Wins. Click OK to start new game");
@@ -137,6 +171,7 @@
         }
         if(ball.x+ball.radius>canvas.width){
             user.score++;
+            //point.play();
              dir=-1;
             if(user.score==5){
                 alert("User Wins. Click OK to start new game");
@@ -169,6 +204,6 @@
             drawrect((canvas.width/2-1),20+c,2,20,"BLACK");   
         }
         move();
-        
+        //point.play();
     }
     var interval=setInterval(draw,10);
