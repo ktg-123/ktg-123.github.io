@@ -17,7 +17,7 @@
         y:(canvas.height-80)/2,
         height:80,
         width:10,
-        color:"RED",
+        color:"#66b266",
         score:0
     };
     var comp={
@@ -25,7 +25,7 @@
         y:(canvas.height-80)/2,
         height:80,
         width:10,
-        color:"BLUE",
+        color:"#7f7fff",
         score:0
     };
     var ball={
